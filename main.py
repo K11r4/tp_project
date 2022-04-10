@@ -3,6 +3,7 @@ from pygame.locals import *
 from scenes.startScreen import StartScreen
 from scenes.gameLevel import GameLevel
 from scenes.gameOver import GameOver
+from scenes.gameEnd import GameEnd
 from screen import Screen
 from controller import Controller
 
@@ -17,16 +18,18 @@ class Game:
         self.scenes = {
             "startScreen": StartScreen(self.screen, self.controller),
             "gameLevel": GameLevel(self.screen, self.controller),
-            "gameOver": GameOver(self.screen, self.controller)
+            "gameOver": GameOver(self.screen, self.controller),
+            "gameEnd": GameEnd(self.screen, self.controller)
         }
 
-        self.currentScene = self.scenes["gameLevel"]
+        self.currentScene = self.scenes["startScreen"]
         self.clock = pygame.time.Clock()
         self.fps = fps
         
 
     def run(self):
         running = True
+        self.currentScene.init()
         while running:
             for event in pygame.event.get():
                 self.controller.notify(event)
@@ -34,6 +37,15 @@ class Game:
                     pygame.quit()
                     sys.exit()
             
+            if not self.currentScene.active:
+                
+                if self.currentScene.next == None:
+                    pygame.quit()
+                    sys.exit()
+                else:
+                    self.currentScene = self.scenes[self.currentScene.next]
+                    self.currentScene.init()
+
             self.currentScene.render()
             self.clock.tick(self.fps)
 
