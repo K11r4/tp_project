@@ -1,11 +1,11 @@
 from body import Body
 from vector import Vector
-from directionController import DirController
-from keyController import KeyContoller
+from controllers.directionController import DirController
+from controllers.keyController import KeyContoller
 from spritesheet import SpriteSheet
 from characters.enemy import Enemy
-from characters.exitpoint import ExitPoint
-from characters.weapon import Weapon
+from objects.exitpoint import ExitPoint
+from objects.weapon import Weapon
 import pygame
 from pygame.locals import *
 

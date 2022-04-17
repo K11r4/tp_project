@@ -2,7 +2,7 @@ from body import Body
 from vector import Vector
 from spritesheet import SpriteSheet
 from ai.weakAi import WeakAI
-from characters.weapon import Weapon
+from objects.weapon import Weapon
 import pygame
 from pygame.locals import *
 

@@ -1,7 +1,5 @@
 import pygame
 from pygame.locals import *
-from characters.weapon import Weapon
-from characters.enemy import Enemy
 
 class Collider:
     def __init__(self):

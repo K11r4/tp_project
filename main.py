@@ -50,8 +50,8 @@ class Game:
             self.clock.tick(self.fps)
 
 
-darkSoulOfElvenKnight_MVP = Game(30)
-darkSoulOfElvenKnight_MVP.run()
+DS_BudgetEdition = Game(30)
+DS_BudgetEdition.run()
     
 
 

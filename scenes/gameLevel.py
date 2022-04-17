@@ -2,7 +2,7 @@ from scenes.scene import Scene
 from collider import Collider
 from characters.player import Player
 from characters.enemy import Enemy
-from characters.exitpoint import ExitPoint
+from objects.exitpoint import ExitPoint
 from camera import Camera
 from map import Map
 

@@ -3,7 +3,7 @@ from pygame.locals import *
 
 from scenes.scene import Scene
 from sprite import Sprite
-from clickController import ClickController
+from controllers.clickController import ClickController
 
 class GameEnd(Scene):
     def __init__(self, screen, controller):

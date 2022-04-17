@@ -6,7 +6,7 @@ class Screen:
         self.width, self.height = width, height
         self.camera = None
         self.mainSurface = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption("DarkSoulOfElvenKnight_MVP")
+        pygame.display.set_caption("DS_BudgetEdition")
 
     def setCamera(self, camera):
         self.camera = camera
