@@ -11,7 +11,7 @@
 WASD (или стрелочки) + Пробел
 
 #### Ссылка на uml:
-https://app.diagrams.net/
+https://drive.google.com/file/d/15rN_GVxVCQgZfPTg3NaLd1gvZnkJ-Q__/view?usp=sharing
 
 
 
