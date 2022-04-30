@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 class Camera:
-    def __init__(self, bodyToWatch, sizeOfScreen, sizeOfMap, scrollEdge=200):
+    def __init__(self, bodyToWatch, sizeOfScreen, sizeOfMap, scrollEdge=500):
         self.scrollEdge = scrollEdge
         self.limits = sizeOfMap
         self.body = bodyToWatch

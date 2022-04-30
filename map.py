@@ -1,60 +1,42 @@
 import pygame
+import json
 from pygame.locals import *
+from sprite import Sprite
+from spritesheet import SpriteSheet
 
 class Map:
     def __init__(self, src):
+        with open(src, 'r') as dirtyData:
+            parseData = json.load(dirtyData)
+
+        self.imageSource = SpriteSheet("./src/stone.png", parseData["tilewidth"], parseData["tileheight"])
         self.obstacles = list()
-        self.view = pygame.Surface((48 * 32, 36 * 32))
-        self.shape = pygame.Rect((0, 0), (48 * 32, 36 * 32))
-        #TODO: parsing TME map
+        self.enemies = list()
+        self.shape = pygame.Rect((0, 0), (parseData["width"] * parseData["tilewidth"], parseData["height"] * parseData["tileheight"]))
 
-        arr = [
-            "################################################",
-            "#............######################............#",
-            "#..............................................#",
-            "#..............................................#",
-            "#..............................................#",
-            "#............################...###............#",
-            "#############################...###............#",
-            "#############################...###............#",
-            "######..........................########...#####",
-            "######..........................########...#####",
-            "######..........................########...#####",
-            "######...###############################...#####",
-            "######...###############################...#####",
-            "######...###############################...#####",
-            "######.........................#########...#####",
-            "######.........................#########...#####",
-            "######.........................#########...#####",
-            "######...###################...#########...#####",
-            "######...###################...#########...#####",
-            "######...###################...#########...#####",
-            "######...####...........####...#########...#####",
-            "######...####...........####...#########...#####",
-            "######...####...........####...#########...#####",
-            "######.....................................#####",
-            "######.....................................#####",
-            "######.....................................#####",
-            "######...####...........####...#########...#####",
-            "######...####...........####...#########...#####",
-            "######...####...........####...#########...#####",
-            "######...###################...###.............#",
-            "######...###################...###.............#",
-            "######...###################...###.............#",
-            "######.........................................#",
-            "######.........................................#",
-            "######.........................................#",
-            "################################################"
+        mapRender = pygame.Surface((parseData["width"] * parseData["tilewidth"], parseData["height"] * parseData["tileheight"]))
+        mapRender.set_colorkey((0, 0, 0))
 
-        ]
-        for i, line in enumerate(arr):
-            for j, sym in enumerate(line):
-                if sym == '#':
-                    
-                    self.obstacles.append(pygame.Rect((32 * j, 32 * i), (32, 32)))
-                    block = pygame.Surface((32, 32))
-                    block.fill(Color("#c03030"))
-                    self.view.blit(block, (32 * j, 32 * i))
+        norm = lambda x: int(round(x / parseData["tilewidth"])) * parseData["tilewidth"]
+
+        for layer in parseData["layers"]:
+            if layer["type"] == "tilelayer":
+                idx = 0
+                for spriteId in layer["data"]:
+                    currentSprite = self.imageSource.getSprite(spriteId - 1)
+                    y = (idx // parseData["width"]) * parseData["tilewidth"]
+                    x = (idx % parseData["width"]) * parseData["tilewidth"]
+                    mapRender.blit(currentSprite.img, (x, y))
+                    idx += 1
+            elif layer["name"] == "walls":
+                for obj in layer["objects"]:
+                    self.obstacles.append(pygame.Rect((norm(obj["x"]), norm(obj["y"])), (norm(obj["width"]), norm(obj["height"]))))
+            elif layer["name"] == "enemies":
+                for obj in layer["objects"]:
+                    self.enemies.append(pygame.Rect((norm(obj["x"]), norm(obj["y"])), (norm(obj["width"]), norm(obj["height"]))))
+
+        
+        self.view = Sprite(mapRender)
         
         
                 

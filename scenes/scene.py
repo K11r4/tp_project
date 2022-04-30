@@ -7,7 +7,11 @@ class Scene:
         self.controller = controller
         self.status = True
         self.objects = list()
+        self.nextScene = None
+        self.next = None
     
     def render(self):
         pygame.display.update()
 
+    def init(self):
+        self.active = True
