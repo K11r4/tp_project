@@ -3,11 +3,12 @@ from vector import Vector
 from controllers.directionController import DirController
 from controllers.keyController import KeyContoller
 from spritesheet import SpriteSheet
-from characters.enemy import Enemy
 from objects.exitpoint import ExitPoint
 from objects.weapon import Weapon
+from objects.healthsphere import HealthSphere
 import pygame
 from pygame.locals import *
+import time
 
 class Player(Body):
     def __init__(self, x, y, controller, scene):
@@ -33,11 +34,13 @@ class Player(Body):
 
         self.isFighting = False
         self.fightingDir = "R"
+        self.appliedWeapons = set()
 
         super().__init__(pygame.Rect((x, y), (width, height)),
                         Vector(self, 10),
                         self.imageSource.getAnimation(0, 6),
-                        pygame.Rect((108, 40), (width, height))
+                        pygame.Rect((108, 40), (width, height)),
+                        90
         )
 
     def update(self):
@@ -49,7 +52,7 @@ class Player(Body):
             self.fightingDir = ("R" if self.direction.lastHorDir >= 0 else "L")
             self.view = self.animations["strike" + self.fightingDir]
             self.view.run()
-            hit = Weapon(self.shape.x, self.shape.y)
+            hit = Weapon(self.shape.x, self.shape.y, self)
             self.scene.objects.append(hit)
             self.scene.collider.addActiveShape(hit)
 
@@ -66,13 +69,17 @@ class Player(Body):
         self.view.update()
     
     def onCollision(self, obj):
-        if isinstance(obj, Enemy):
-            print(obj.shape)
-            print(self.shape)
-            self.alive = False
-            self.status = "died"
+        if isinstance(obj, Weapon):
+            if (obj.body != self) and (obj not in self.appliedWeapons):
+                self.hp -= 60
+                self.appliedWeapons.add(obj)
+                print(self.hp, time.time())
         elif isinstance(obj, ExitPoint):
             self.alive = False
             self.status = "winned"
+        elif isinstance(obj, HealthSphere):
+            print("Yeeees")
+            obj.kill()
+            self.hp = min(self.hp + 30, 90)
         
     

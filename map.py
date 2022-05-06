@@ -12,7 +12,9 @@ class Map:
         self.imageSource = SpriteSheet("./src/stone.png", parseData["tilewidth"], parseData["tileheight"])
         self.obstacles = list()
         self.enemies = list()
+        self.healthpoints = list()
         self.shape = pygame.Rect((0, 0), (parseData["width"] * parseData["tilewidth"], parseData["height"] * parseData["tileheight"]))
+        self.useCamera = True
 
         mapRender = pygame.Surface((parseData["width"] * parseData["tilewidth"], parseData["height"] * parseData["tileheight"]))
         mapRender.set_colorkey((0, 0, 0))
@@ -34,6 +36,9 @@ class Map:
             elif layer["name"] == "enemies":
                 for obj in layer["objects"]:
                     self.enemies.append(pygame.Rect((norm(obj["x"]), norm(obj["y"])), (norm(obj["width"]), norm(obj["height"]))))
+            elif layer["name"] == "healthpoints":
+                for obj in layer["objects"]:
+                    self.healthpoints.append(pygame.Rect((norm(obj["x"]), norm(obj["y"])), (norm(obj["width"]), norm(obj["height"]))))
 
         
         self.view = Sprite(mapRender)

@@ -20,9 +20,11 @@ class WeakAI:
                 and dx ** 2 + dy ** 2 < self.minDist ** 2:
             self.agression = self.agression or True
 
-        if self.agression and 32 ** 2 < dx ** 2 + dy ** 2:
-            
-            self.body.walk(dx, dy)
+        if self.agression:
+            if self.agression and 60 ** 2 < dx ** 2 + dy ** 2:
+                self.body.walk(dx, dy)
+            else:
+                self.body.attack()
         else:
             now = time.time()
             if now - self.lastTime > self.delay:
