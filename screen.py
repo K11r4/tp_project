@@ -21,7 +21,7 @@ class Screen:
         if not gameObject.view:
             return
         x, y = gameObject.shape.x, gameObject.shape.y
-        if self.camera:
+        if self.camera and gameObject.useCamera:
             x -= self.camera.shape.x
             y -= self.camera.shape.y
         self.mainSurface.blit(gameObject.view.img, (x, y))

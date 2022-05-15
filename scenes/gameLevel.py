@@ -3,6 +3,8 @@ from collider import Collider
 from characters.player import Player
 from characters.enemy import Enemy
 from objects.exitpoint import ExitPoint
+from objects.healthsphere import HealthSphere
+from interface.healthbar import HealthBar
 from camera import Camera
 from map import Map
 
@@ -25,17 +27,26 @@ class GameLevel(Scene):
 
         self.collider = Collider()
         self.collider.addKinematicShape(player)
+        self.collider.addActiveShape(player)
 
         for obj in self.map.obstacles:
             self.collider.addStaticShape(obj)
         
         for obj in self.map.enemies:
-            newEnemy = Enemy(obj.x, obj.y, player)
+            newEnemy = Enemy(obj.x, obj.y, player, self)
             self.objects.append(newEnemy)
             self.collider.addKinematicShape(newEnemy)
             self.collider.addActiveShape(newEnemy)
 
         self.collider.addActiveShape(ExitPoint(3972, 2692))
+
+        for obj in self.map.healthpoints:
+            newSphere = HealthSphere(obj.x, obj.y)
+            self.objects.append(newSphere)
+            self.collider.addKinematicShape(newSphere)
+            self.collider.addActiveShape(newSphere)
+
+        self.objects.append(HealthBar(player, 90))
 
         self.camera = Camera(player, (self.screen.width, self.screen.height), self.map.shape)
         self.screen.setCamera(self.camera)
