@@ -1,3 +1,5 @@
+import pygame
+from pygame.locals import *
 from scenes.scene import Scene
 from collider import Collider
 from characters.player import Player
@@ -12,7 +14,7 @@ class GameLevel(Scene):
     def __init__(self, screen, controller):
         super().__init__(screen, controller)
         self.map = Map("./src/map.json")
-
+        self.musicTheme = pygame.mixer.Sound("./src/mainTheme.mp3")
         
 
         
@@ -51,6 +53,8 @@ class GameLevel(Scene):
         self.camera = Camera(player, (self.screen.width, self.screen.height), self.map.shape)
         self.screen.setCamera(self.camera)
 
+        self.musicTheme.play()
+
         super().init()
         
 
@@ -62,6 +66,7 @@ class GameLevel(Scene):
         self.collider.update()
 
         if not self.player.alive:
+            self.musicTheme.stop()
             if self.player.status == "died":
                 self.active = False
                 self.next = "gameOver"
